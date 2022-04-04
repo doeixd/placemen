@@ -15,7 +15,7 @@ async function handleSubmit(e) {
   const { data ,error } = await supabase.from('accounts').insert({ username, password }) 
   if (!error?.message) {
     document.querySelector('#username').value = ''
-    document.querySelector('#username').value = ''
+    document.querySelector('#password').value = ''
     setShow(true)
     setTimeout(() => setShow(false), 5000)
   }
