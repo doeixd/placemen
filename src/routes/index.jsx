@@ -22,8 +22,6 @@ async function handleSubmit(e) {
 }
 
 function getClient() {
-  console.log(process.env)
-  console.log(import.meta.env)
   return createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_KEY)
 }
 
