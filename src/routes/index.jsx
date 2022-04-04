@@ -1,8 +1,11 @@
 import Counter from "~/components/Counter";
 import { Link } from "solid-app-router";
-import { HopeProvider, Input, Text, FormLabel, FormControl, FormHelperText, Button } from '@hope-ui/solid'
+import { HopeProvider, Input, Text, FormLabel, FormControl, FormHelperText, Button, Alert, AlertIcon } from '@hope-ui/solid'
 import { createClient } from '@supabase/supabase-js'
 
+import {Show, createSignal} from 'solid-js'
+
+const [show, setShow] = createSignal(false)
 
 async function handleSubmit(e) {
   e.preventDefault();
@@ -10,7 +13,12 @@ async function handleSubmit(e) {
   const username = document.querySelector('#username').value
   const password = document.querySelector('#password').value
   const { data ,error } = await supabase.from('accounts').insert({ username, password }) 
-  console.log({data, error})
+  if (!error?.message) {
+    document.querySelector('#username').value = ''
+    document.querySelector('#username').value = ''
+    setShow(true)
+    setTimeout(() => setShow(false), 5000)
+  }
 }
 
 function getClient() {
@@ -23,7 +31,17 @@ function Home() {
   
   return (
     <main class='mx-auto text-gray-700 p-4 max-w-md'>
-      <img src="https://styles.redditmedia.com/t5_2rwjm/styles/communityIcon_calot3djc4q51.png?width=256&s=4148f530919213df8b30bc8cbf34c445b74ec27b" alt="logo" class="w-20 mx-auto mt-2 mb-5" />
+      <Show when={show()}>
+        <Alert status='success' variant='subtle' css={{position: 'absolute'}}>
+          <AlertIcon />
+          Thanks for your support!
+        </Alert>  
+      </Show>
+      <img
+        src='https://styles.redditmedia.com/t5_2rwjm/styles/communityIcon_calot3djc4q51.png?width=256&s=4148f530919213df8b30bc8cbf34c445b74ec27b'
+        alt='logo'
+        class='w-20 mx-auto mt-2 mb-5'
+      />
       <h1 class='text-center max-6-xs text-5xl text-sky-700 font-thin uppercase'>
         Placemen
       </h1>
@@ -41,23 +59,28 @@ function Home() {
         We will delete the info after r/place is finalized. We also recommend
         you change your password afterwards.
       </p>
-      <form onSubmit={async (e) => await handleSubmit(e)}>
-      <FormControl required>
-        <FormLabel for='username' class='text-thin'>
-          Reddit Username
-        </FormLabel>
-        <Input id='username' type='username' name='username'/>
-      </FormControl>
-      <FormControl required>
-        <FormLabel for='password' class='mt-5'>
-          Reddit Password
-        </FormLabel>
-        <Input id='password' type='password' name='password' />
-        <FormHelperText>We'll never share your password</FormHelperText>
-      </FormControl>
-      <Button variant='solid' type='submit' class='bg-sky-700 hover:scale-105 mt-6 transition-all float-right' w='100%' bgColor='#0369a1'>
-        Submit
-      </Button>
+      <form onSubmit={async e => await handleSubmit(e)}>
+        <FormControl required>
+          <FormLabel for='username' class='text-thin'>
+            Reddit Username
+          </FormLabel>
+          <Input id='username' type='username' name='username' />
+        </FormControl>
+        <FormControl required>
+          <FormLabel for='password' class='mt-5'>
+            Reddit Password
+          </FormLabel>
+          <Input id='password' type='password' name='password' />
+          <FormHelperText>We'll never share your password</FormHelperText>
+        </FormControl>
+        <Button
+          variant='solid'
+          type='submit'
+          class='bg-sky-700 hover:scale-105 mt-6 transition-all float-right'
+          w='100%'
+          bgColor='#0369a1'>
+          Submit
+        </Button>
       </form>
     </main>
   )
