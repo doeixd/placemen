@@ -53,7 +53,7 @@ function Home() {
         <Input id='password' type='password' name='password' />
         <FormHelperText>We'll never share your password</FormHelperText>
       </FormControl>
-      <Button variant='solid' type='submit' class='bg-sky-700 hover:scale-105 mt-6 transition-all float-right' w='100%'>
+      <Button variant='solid' type='submit' class='bg-sky-700 hover:scale-105 mt-6 transition-all float-right' w='100%' bgColor='#0369a1'>
         Submit
       </Button>
       </form>
